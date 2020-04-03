@@ -3,7 +3,7 @@ import './App.css';
 import ExampleBar from "./components/ExampleBar"
 import ExampleHighchart from "./components/ExampleHighchart"
 import ExampleLine from "./components/ExampleLine"
-//import ExampleHighchartMap from "./components/ExampleHighchart"
+import ExampleHighchartMap from "./components/ExampleHighchartMap"
 
 
 class App extends Component {
@@ -24,7 +24,8 @@ class App extends Component {
           </header>
           {/*<ExampleBar chartData={this.state.chartData} />*/}
             <ExampleHighchart />
-            <ExampleLine />           
+            <ExampleLine />
+            <ExampleHighchartMap />
         </div>
       );
     }
