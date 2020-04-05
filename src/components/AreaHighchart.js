@@ -84,7 +84,7 @@ class AreaHighchart extends Component {
                     lineColor: '#666666',
                     symbol: 'circle',
                     radius: 2
-                }
+                }                
             },
             series: {
                 events: {
@@ -97,11 +97,14 @@ class AreaHighchart extends Component {
         series: [{
             name: 'Recuperados',
             data: recoveredValues,
-            color: '#3be384',            
+            color: '#82feb7',
+            // dataLabels: {
+            //     enabled: true
+            // }
         }, {
             name: 'Activos',
             data: activesValues,
-            color: '#e35a3b'
+            color: '#feb782'
         }, {
             name: 'Muertes',
             data: deathsValues,

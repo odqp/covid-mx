@@ -76,8 +76,7 @@ class MapHighchart extends Component {
     var counter = 0;
     dataArray.forEach(function(item){
         let estado =item.replace(/\"/g,"").split(",");
-        
-        let code = 
+                
         arrayProcessed.push([parseInt(estado[0]), dataConfig[counter][2], parseInt(estado[4]), parseInt(estado[5]), parseInt(estado[6]), parseInt(estado[7]), dataConfig[counter][0]] );
         counter++;
     });
