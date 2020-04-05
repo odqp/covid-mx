@@ -88,7 +88,7 @@ class StateDetailHighchart extends Component {
 
                 finaldata = {
                     chart: {
-                        height: 800,
+                        height: 700,
                         type: 'bar'
                     },
                     title: {

@@ -90,7 +90,7 @@ class MapHighchart extends Component {
 
                 options = {
                     chart: {
-                        height: 500, //(9 / 16 * 100) + '%',
+                        height: 700,//(9 / 16 * 100) + '%',
                         map: "countries/mx/mx-all"
                     },
                     title: {

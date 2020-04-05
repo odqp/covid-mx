@@ -9,32 +9,86 @@ import StateDetailHighchart from "./components/StateDetailHighchart"
 import AgeHighchart from "./components/AgeHighchart"
 import CountriesCasesHighchart from "./components/CountriesCasesHighchart"
 import CountriesDeathsHighchart from "./components/CountriesDeathsHighchart"
+import { Col, Row, Container, Card } from "react-bootstrap";
 
 class App extends Component {
-  
-  constructor()
-  {
+
+  constructor() {
     super()
     this.state = {
       isLoading: false,
-      chartData: {}      
+      chartData: {}
     }
   }
 
-  render(){
-      return (        
-        <div className="App">
-          <header className="App-header">        				                  
-          </header>          
-            <AreaHighchart />
-            <MapHighchart />
-            <StateDetailHighchart />
-            <AgeHighchart />
-            <CountriesCasesHighchart />
-            <CountriesDeathsHighchart />            
-        </div>
-      );
-    }
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+        </header>
+
+        <Container fluid>
+        <br />
+          <Row>
+            <Col>
+              <Card >
+                <Card.Body>
+                  <AreaHighchart />
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col sm={6}>
+              <Card >
+                <Card.Body>
+                  <MapHighchart />
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col sm={6}>
+              <Card >
+                <Card.Body>
+                  <StateDetailHighchart />
+                </Card.Body>
+              </Card>
+
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col sm={12}>
+              <Card >
+                <Card.Body>
+                  <AgeHighchart />
+                </Card.Body>
+              </Card>            
+            </Col>
+          </Row>
+          <br />
+        <Row>
+          <Col sm={6}>
+            <Card >
+              <Card.Body>
+                <CountriesCasesHighchart />
+              </Card.Body>
+            </Card>
+
+          </Col>
+          <Col sm={6}>
+            <Card >
+              <Card.Body>
+                <CountriesDeathsHighchart />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        </Container>
+      </div >
+    );
+  }
 }
 
 

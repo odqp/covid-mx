@@ -56,7 +56,7 @@ class AreaHighchart extends Component {
 
                 let finalData = {
                     chart: {
-                        height: 600, //(9 / 16 * 100) + '%',
+                        height: 500, //(9 / 16 * 100) + '%',
                         type: 'area'
                     },
                     title: {
