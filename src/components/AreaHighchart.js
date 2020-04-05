@@ -60,7 +60,7 @@ class AreaHighchart extends Component {
                         type: 'area'
                     },
                     title: {
-                        text: 'Casos activos, recuperados y muertes en México',
+                        text: 'Casos activos, recuperados y defunciones en México',
                         style: {                         
                             fontWeight: 'bold',
                             fontSize: '22px'
@@ -117,7 +117,7 @@ class AreaHighchart extends Component {
                         data: activesValues,
                         color: '#feb782'
                     }, {
-                        name: 'Muertes',
+                        name: 'Defunciones',
                         data: deathsValues,
                         color: '#262524'
                     }]

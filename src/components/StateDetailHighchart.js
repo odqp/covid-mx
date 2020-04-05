@@ -92,7 +92,7 @@ class StateDetailHighchart extends Component {
                         type: 'bar'
                     },
                     title: {
-                        text: 'Casos y muertes registradas por estado',
+                        text: 'Casos y defunciones registradas por estado',
                         style: {                         
                             fontWeight: 'bold',
                             fontSize: '22px'
@@ -143,7 +143,8 @@ class StateDetailHighchart extends Component {
                             color: "#feb782"
                         }, {
                             name: 'Perdidas',
-                            data: deaths
+                            data: deaths,
+                            color: "#262524"
                         }
                     ]
                 };                

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import ExampleBar from "./components/ExampleBar"
-import ExampleHighchart from "./components/ExampleHighchart"
-import ExampleLine from "./components/ExampleLine"
 import MapHighchart from "./components/MapHighchart"
 import AreaHighchart from "./components/AreaHighchart"
 import StateDetailHighchart from "./components/StateDetailHighchart"
@@ -27,7 +24,9 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+        <p>Mi México en COVID</p>  
         </header>
+        
 
         <Container fluid>
         <br />
@@ -93,6 +92,26 @@ class App extends Component {
             </Card>
           </Col>
         </Row>
+        <br />
+        <Row>
+            <Col>
+              <Card >
+                <Card.Body>
+                  <p>Fuentes: </p>
+                  [https://www.gob.mx/salud/documentos/coronavirus-covid-19-comunicado-tecnico-diario-238449]
+                  <br/>
+                  [https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports]
+                  <br/>
+                  [https://www.worldometers.info/coronavirus]
+                  <br/>
+                  [https://github.com/novelcovid/api]
+                  <br/>
+                  [https://thevirustracker.com/api]
+
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         <br />
         </Container>
 
