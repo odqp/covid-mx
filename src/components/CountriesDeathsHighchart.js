@@ -103,7 +103,11 @@ class CountriesDeathsHighchart extends Component {
           type: 'line'
       },
       title: {
-          text: 'Muertes registradas por dia trascurrido'
+          text: 'Muertes registradas por día trascurrido',
+          style: {                         
+              fontWeight: 'bold',
+              fontSize: '22px'
+          }
       },
       subtitle: {
           text: ''

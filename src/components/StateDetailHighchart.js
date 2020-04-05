@@ -92,7 +92,11 @@ class StateDetailHighchart extends Component {
                         type: 'bar'
                     },
                     title: {
-                        text: 'Casos y muertes registradas por estado'
+                        text: 'Casos y muertes registradas por estado',
+                        style: {                         
+                            fontWeight: 'bold',
+                            fontSize: '22px'
+                        }
                     },
                     xAxis: {
                         categories: statesLabels,
@@ -101,11 +105,7 @@ class StateDetailHighchart extends Component {
                         }
                     },
                     yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Population (millions)',
-                            align: 'high'
-                        },
+                        min: 0,                        
                         labels: {
                             overflow: 'justify'
                         }

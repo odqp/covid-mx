@@ -49,7 +49,11 @@ class AgeHighchart extends Component {
                         type: 'bar'
                     },
                     title: {
-                        text: 'Cosos detectados por Edad y Sexo'
+                        text: 'Cosos detectados por edad y sexo',
+                        style: {                         
+                            fontWeight: 'bold',
+                            fontSize: '22px'
+                        }
                     },
                     xAxis: [{
                         categories: categories,

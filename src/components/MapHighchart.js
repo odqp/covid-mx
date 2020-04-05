@@ -94,7 +94,11 @@ class MapHighchart extends Component {
                         map: "countries/mx/mx-all"
                     },
                     title: {
-                        text: "Casos detectados por estado"
+                        text: "Casos detectados por estado",
+                        style: {                         
+                            fontWeight: 'bold',
+                            fontSize: '22px'
+                        }
                     },
                     plotOptions: {
                         map: {

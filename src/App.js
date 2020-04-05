@@ -9,6 +9,8 @@ import StateDetailHighchart from "./components/StateDetailHighchart"
 import AgeHighchart from "./components/AgeHighchart"
 import CountriesCasesHighchart from "./components/CountriesCasesHighchart"
 import CountriesDeathsHighchart from "./components/CountriesDeathsHighchart"
+import AgeTotalHichchart from "./components/AgeTotalHichchart"
+
 import { Col, Row, Container, Card } from "react-bootstrap";
 
 class App extends Component {
@@ -58,7 +60,14 @@ class App extends Component {
           </Row>
           <br />
           <Row>
-            <Col sm={12}>
+            <Col sm={6}>
+              <Card >
+                <Card.Body>
+                  <AgeTotalHichchart />
+                </Card.Body>
+              </Card>            
+            </Col>
+            <Col sm={6}>
               <Card >
                 <Card.Body>
                   <AgeHighchart />
@@ -84,8 +93,11 @@ class App extends Component {
             </Card>
           </Col>
         </Row>
-
+        <br />
         </Container>
+
+        <footer className="App-header">
+        </footer>
       </div >
     );
   }
