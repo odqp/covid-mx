@@ -27,8 +27,6 @@ class AreaHighchart extends Component {
   {
     axios.get('https://corona.lmao.ninja/v2/historical/mx')
     .then(response => {
-      //console.log(response);           
-
       let cases = response.data.timeline.cases;
       let recovered = response.data.timeline.recovered;
       let deaths = response.data.timeline.deaths;
@@ -51,13 +49,14 @@ class AreaHighchart extends Component {
     
       let finalData = {
         chart: {
+            height: 600, //(9 / 16 * 100) + '%',
             type: 'area'
         },
         title: {
             text: 'Casos activos, recuperados y muertes'
         },
         subtitle: {
-            text: '[https://www.worldometers.info/coronavirus]/[https://github.com/novelcovid/api]'
+            text: '[https://www.worldometers.info/coronavirus]<br/>[https://github.com/novelcovid/api]'
         },
         xAxis: {
             categories: labels,
@@ -69,11 +68,6 @@ class AreaHighchart extends Component {
         yAxis: {
             title: {
                 enabled: false
-            },
-            labels: {
-                formatter: function () {
-                    return this.value / 1000;
-                }
             }
         },
         tooltip: {
