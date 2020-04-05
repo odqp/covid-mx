@@ -2,16 +2,23 @@ import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import axios from 'axios';
- 
+import {dateFormater} from "../utils/utils"
+
 class AreaHighchart extends Component {
 
     static formatTooltip(tooltip, x = this.x, points = this.points) {
-        var toolText = '<b>[' + x + '] --> ' + points[0].total + '</b><br>';        
+        var toolText = x;
+        var rows = []
         points.forEach((point) =>
-            toolText += '<br/><span style="color:' + point.series.color + '">\u25CF</span>' + point.series.name + ' :<b>' + point.y + '</b>'
+            //toolText += '<br/><span style="color:' + point.series.color + '">\u25CF</span>' + point.series.name + ' :<b>' + point.y + '</b>'
+            rows.push('<br/><span style="color:' + point.series.color + '">\u25CF</span>' + point.series.name + ' :<b>' + point.y + '</b>')
         );
+        toolText+= rows[1];
+        toolText+= rows[0];
+        toolText+= rows[2];
+
         return toolText;
-      }
+    }
 
   constructor(props) {
     super(props);
@@ -39,7 +46,7 @@ class AreaHighchart extends Component {
       for (var key in cases) {
           if(cases[key] > 0)
           {
-            labels.push(key)
+            labels.push(dateFormater(key))
             casesValues.push(cases[key])
             recoveredValues.push(recovered[key])
             deathsValues.push(deaths[key])
@@ -53,11 +60,8 @@ class AreaHighchart extends Component {
             type: 'area'
         },
         title: {
-            text: 'Casos activos, recuperados y muertes'
-        },
-        subtitle: {
-            text: '[https://www.worldometers.info/coronavirus]<br/>[https://github.com/novelcovid/api]'
-        },
+            text: 'Casos activos, recuperados y muertes en México'
+        },        
         xAxis: {
             categories: labels,
             tickmarkPlacement: 'off',
@@ -72,7 +76,9 @@ class AreaHighchart extends Component {
         },
         tooltip: {
             split: true,            
-            formatter: AreaHighchart.formatTooltip
+            formatter: AreaHighchart.formatTooltip,
+            crosshairs: true
+            //shared: true
         },
         plotOptions: {
             area: {
@@ -97,10 +103,11 @@ class AreaHighchart extends Component {
         series: [{
             name: 'Recuperados',
             data: recoveredValues,
-            color: '#82feb7',
-            // dataLabels: {
-            //     enabled: true
-            // }
+            color: '#82feb7'     ,
+            dataLabels: {
+                enabled: true,
+                format: "{total}"
+           },                   
         }, {
             name: 'Activos',
             data: activesValues,

@@ -4,7 +4,7 @@ import Highcharts from 'highcharts';
 import axios from 'axios';
 import {dateFormater} from "../utils/utils"
  
-class countriesCasesHighchart extends Component {
+class CountriesDeathsHighchart extends Component {
 
     static formatTooltip(tooltip, x = this.x, points = this.points) {
         var toolText = '<b>[' + x + '] --> ' + points[0].total + '</b><br>';        
@@ -43,7 +43,7 @@ class countriesCasesHighchart extends Component {
       for (var key in casesMx) {
         if(key != "stat"){
             //labels.push(dateFormater(key))
-            casesMxValues.push(casesMx[key].total_cases)
+            casesMxValues.push(casesMx[key].total_deaths)
 
         }
       }
@@ -60,7 +60,7 @@ class countriesCasesHighchart extends Component {
       for (var key in casesEspa) {
         if(key != "stat"){          
             labels.push(key)
-            casesEspaValues.push(casesEspa[key].total_cases)            
+            casesEspaValues.push(casesEspa[key].total_deaths)            
           }
       }
       valoresEspa = casesEspaValues;      
@@ -74,7 +74,7 @@ class countriesCasesHighchart extends Component {
      
       for (var key in casesItaly) {
         if(key != "stat"){
-            casesItalyValues.push(casesItaly[key].total_cases)            
+            casesItalyValues.push(casesItaly[key].total_deaths)            
           }
       }
       valoresItaly = casesItalyValues;      
@@ -88,7 +88,7 @@ class countriesCasesHighchart extends Component {
      
       for (var key in cases) {
         if(key != "stat"){
-            casesValues.push(cases[key].total_cases)            
+            casesValues.push(cases[key].total_deaths)            
           }
       }
       valoresUSA = casesValues;      
@@ -101,7 +101,7 @@ class countriesCasesHighchart extends Component {
           type: 'line'
       },
       title: {
-          text: 'Casos dectectados por dia trascurrido'
+          text: 'Muertes registradas por dia trascurrido'
       },
       subtitle: {
           text: ''
@@ -134,27 +134,24 @@ class countriesCasesHighchart extends Component {
         {
           name: 'USA',
           data: valoresUSA,
-          color: "#ffa94e",
-          dashStyle: 'ShortDot'
+          color: "#ffa94e"
       },
       {
            name: 'España',
            data: valoresEspa,
-           color: '#ff504e',
-           dashStyle: 'ShortDot'
+           color: '#ff504e'
        },
        {
          name: 'Italia',
          data: valoresItaly,         
-          color: "#4ea5ff",
-          dashStyle: 'ShortDot'
+          color: "#4ea5ff"
        },
        {
         name: 'México',
         data: valoresMX,
         color: '#006700',
-        lineWidth: 5
-      }
+        lineWidth: 3
+      }    
     ]
   };
 
@@ -175,4 +172,4 @@ class countriesCasesHighchart extends Component {
   }
 }
 
-export default countriesCasesHighchart;
+export default CountriesDeathsHighchart;

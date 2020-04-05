@@ -7,6 +7,9 @@ import MapHighchart from "./components/MapHighchart"
 import AreaHighchart from "./components/AreaHighchart"
 import StateDetailHighchart from "./components/StateDetailHighchart"
 import AgeHighchart from "./components/AgeHighchart"
+import CountriesCasesHighchart from "./components/CountriesCasesHighchart"
+import CountriesDeathsHighchart from "./components/CountriesDeathsHighchart"
+
 
 class App extends Component {
   
@@ -23,13 +26,13 @@ class App extends Component {
       return (
         <div className="App">
           <header className="App-header">        				                  
-          </header>
-          {/*<ExampleBar chartData={this.state.chartData} />*/}
+          </header>          
             <AreaHighchart />
             <MapHighchart />
             <StateDetailHighchart />
             <AgeHighchart />
-            <ExampleLine />
+            <CountriesCasesHighchart />
+            <CountriesDeathsHighchart />            
         </div>
       );
     }

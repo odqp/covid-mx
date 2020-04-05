@@ -118,15 +118,15 @@ class MapHighchart extends Component {
             to: 50,
             color: "#fffde8"
         }, {
-            from: 51,
+            from: 50,
             to: 100,
             color: "#fef582"
         }, {
-            from: 101,
+            from: 100,
             to: 501,
             color: "#feb782"        
         }, {
-            from: 501,
+            from: 500,
             to: 1000,
             color: "#B7371A"
         }]

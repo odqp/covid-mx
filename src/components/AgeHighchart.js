@@ -48,11 +48,8 @@ class AgeHighchart extends Component {
             type: 'bar'
         },
         title: {
-            text: 'Population pyramid for Germany, 2018'
+            text: 'Cosos detectados por Edad y Sexo'
         },
-        subtitle: {
-            text: 'Source: <a href="http://populationpyramid.net/germany/2018/">Population Pyramids of the World from 1950 to 2100</a>'
-        },        
         xAxis: [{
             categories: categories,
             reversed: false,

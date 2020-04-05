@@ -90,10 +90,7 @@ class StateDetailHighchart extends Component {
             type: 'bar'
         },
         title: {
-            text: 'Historic World Population by Region'
-        },
-        subtitle: {
-            text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+            text: 'Casos y muertes registradas por estado'
         },
         xAxis: {
             categories: statesLabels,
