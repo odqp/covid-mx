@@ -10,7 +10,6 @@ import AgeHighchart from "./components/AgeHighchart"
 import CountriesCasesHighchart from "./components/CountriesCasesHighchart"
 import CountriesDeathsHighchart from "./components/CountriesDeathsHighchart"
 
-
 class App extends Component {
   
   constructor()
@@ -23,7 +22,7 @@ class App extends Component {
   }
 
   render(){
-      return (
+      return (        
         <div className="App">
           <header className="App-header">        				                  
           </header>          

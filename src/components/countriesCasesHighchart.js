@@ -2,174 +2,176 @@ import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import axios from 'axios';
-import {dateFormater} from "../utils/utils"
- 
+import { dateFormater } from "../utils/utils"
+import ReactSpinner from 'react-bootstrap-spinner'
+
 class countriesCasesHighchart extends Component {
 
-    static formatTooltip(tooltip, x = this.x, points = this.points) {
-        var toolText = '<b>[' + x + '] --> ' + points[0].total + '</b><br>';        
-        points.forEach((point) =>
-            toolText += '<br/><span style="color:' + point.series.color + '">\u25CF</span>' + point.series.name + ' :<b>' + point.y + '</b>'
-        );
-        return toolText;
-      }
+  static formatTooltip(tooltip, x = this.x, points = this.points) {
+    var toolText = '<b>[' + x + '] --> ' + points[0].total + '</b><br>';
+    points.forEach((point) =>
+      toolText += '<br/><span style="color:' + point.series.color + '">\u25CF</span>' + point.series.name + ' :<b>' + point.y + '</b>'
+    );
+    return toolText;
+  }
 
   constructor(props) {
     super(props);
- 
+
     this.state = {
       // To avoid unnecessary update keep all options in the state.
       chartOptions: {},
       mxValues: [],
-      hoverData: null
+      hoverData: null,
+      isLoading: true
     };
   }
- 
-  async componentDidMount()
-  {
+
+  async componentDidMount() {
     var valoresMX = [];
     var valoresEspa = [];
     var valoresItaly = [];
     var valoresUSA = [];
-    let labels = []; 
+    let labels = [];
     var countMXDays = 0;
-    
+
     await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=mx')
-    .then(response => {
-      let casesMx = response.data.timelineitems[0];      
-           
-      let casesMxValues = [];
-     
-      for (var key in casesMx) {
-        if(key != "stat"){
+      .then(response => {
+        let casesMx = response.data.timelineitems[0];
+
+        let casesMxValues = [];
+
+        for (var key in casesMx) {
+          if (key != "stat") {
             //labels.push(dateFormater(key))
             casesMxValues.push(casesMx[key].total_cases)
 
+          }
         }
-      }
-      valoresMX = casesMxValues;
-      countMXDays = casesMxValues.length-1;
-    })    
+        valoresMX = casesMxValues;
+        countMXDays = casesMxValues.length - 1;
+      })
 
     await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=es')
-    .then(response => {
-      let casesEspa = response.data.timelineitems[0];
-           
-      let casesEspaValues = [];
-     
-      for (var key in casesEspa) {
-        if(key != "stat"){          
+      .then(response => {
+        let casesEspa = response.data.timelineitems[0];
+
+        let casesEspaValues = [];
+
+        for (var key in casesEspa) {
+          if (key != "stat") {
             labels.push(key)
-            casesEspaValues.push(casesEspa[key].total_cases)            
+            casesEspaValues.push(casesEspa[key].total_cases)
           }
-      }
-      valoresEspa = casesEspaValues;      
-    })
+        }
+        valoresEspa = casesEspaValues;
+      })
 
     await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=it')
-    .then(response => {
-      let casesItaly = response.data.timelineitems[0];      
-           
-      let casesItalyValues = [];
-     
-      for (var key in casesItaly) {
-        if(key != "stat"){
-            casesItalyValues.push(casesItaly[key].total_cases)            
+      .then(response => {
+        let casesItaly = response.data.timelineitems[0];
+
+        let casesItalyValues = [];
+
+        for (var key in casesItaly) {
+          if (key != "stat") {
+            casesItalyValues.push(casesItaly[key].total_cases)
           }
-      }
-      valoresItaly = casesItalyValues;      
-    })
+        }
+        valoresItaly = casesItalyValues;
+      })
 
     await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=us')
-    .then(response => {
-      let cases = response.data.timelineitems[0];      
-           
-      let casesValues = [];
-     
-      for (var key in cases) {
-        if(key != "stat"){
-            casesValues.push(cases[key].total_cases)            
+      .then(response => {
+        let cases = response.data.timelineitems[0];
+
+        let casesValues = [];
+
+        for (var key in cases) {
+          if (key != "stat") {
+            casesValues.push(cases[key].total_cases)
           }
-      }
-      valoresUSA = casesValues;      
-    })
+        }
+        valoresUSA = casesValues;
+      })
 
 
     let finalData = {
       chart: {
-          height: 600, //(9 / 16 * 100) + '%',
-          type: 'line'
+        height: 600, //(9 / 16 * 100) + '%',
+        type: 'line'
       },
       title: {
-          text: 'Casos dectectados por dia trascurrido'
+        text: 'Casos dectectados por dia trascurrido'
       },
       subtitle: {
-          text: ''
+        text: ''
       },
       xAxis: {
-          //categories: labels,
-          tickmarkPlacement: 'off',
-          title: {
-              enabled: false
-          },          
-          plotBands: [{ // visualize the weekend
-            from: 0,
-            to: countMXDays,
-            color: '#ffeae9'
+        //categories: labels,
+        tickmarkPlacement: 'off',
+        title: {
+          enabled: false
+        },
+        plotBands: [{ // visualize the weekend
+          from: 0,
+          to: countMXDays,
+          color: '#ffeae9'
         }]
       },
       yAxis: {
-          title: {
-              enabled: false
-          }
+        title: {
+          enabled: false
+        }
       },
       tooltip: {
-          crosshairs: true,
-          split: true,            
-          shared: true
-          //formatter: countriesCasesHighchart.formatTooltip
+        crosshairs: true,
+        split: true,
+        shared: true
+        //formatter: countriesCasesHighchart.formatTooltip
       },
       series: [
-        
+
         {
           name: 'USA',
           data: valoresUSA,
           color: "#ffa94e",
           dashStyle: 'ShortDot'
-      },
-      {
-           name: 'España',
-           data: valoresEspa,
-           color: '#ff504e',
-           dashStyle: 'ShortDot'
-       },
-       {
-         name: 'Italia',
-         data: valoresItaly,         
+        },
+        {
+          name: 'España',
+          data: valoresEspa,
+          color: '#ff504e',
+          dashStyle: 'ShortDot'
+        },
+        {
+          name: 'Italia',
+          data: valoresItaly,
           color: "#4ea5ff",
           dashStyle: 'ShortDot'
-       },
-       {
-        name: 'México',
-        data: valoresMX,
-        color: '#006700',
-        lineWidth: 5
-      }
-    ]
-  };
+        },
+        {
+          name: 'México',
+          data: valoresMX,
+          color: '#006700',
+          lineWidth: 5
+        }
+      ]
+    };
 
-  this.setState({chartOptions: finalData, isLoaded: true });
+    this.setState({ chartOptions: finalData, isLoading: false });
   }
- 
+
   render() {
-    const { chartOptions } = this.state;
- 
+    const { chartOptions, isLoading } = this.state;
+    if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
+
     return (
       <div>
         <HighchartsReact
           highcharts={Highcharts}
           options={chartOptions}
-        />           
+        />
       </div>
     )
   }

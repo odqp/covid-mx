@@ -3,6 +3,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import axios from 'axios';
 import {dateFormater} from "../utils/utils"
+import ReactSpinner from 'react-bootstrap-spinner'
  
 class CountriesDeathsHighchart extends Component {
 
@@ -21,7 +22,8 @@ class CountriesDeathsHighchart extends Component {
       // To avoid unnecessary update keep all options in the state.
       chartOptions: {},
       mxValues: [],
-      hoverData: null
+      hoverData: null,
+      isLoading: true
     };
   }
  
@@ -134,32 +136,36 @@ class CountriesDeathsHighchart extends Component {
         {
           name: 'USA',
           data: valoresUSA,
-          color: "#ffa94e"
+          color: "#ffa94e",
+          dashStyle: 'ShortDot'
       },
       {
            name: 'España',
            data: valoresEspa,
-           color: '#ff504e'
+           color: '#ff504e',
+           dashStyle: 'ShortDot'
        },
        {
          name: 'Italia',
          data: valoresItaly,         
-          color: "#4ea5ff"
+          color: "#4ea5ff",
+          dashStyle: 'ShortDot'
        },
        {
         name: 'México',
         data: valoresMX,
         color: '#006700',
-        lineWidth: 3
+        lineWidth: 5
       }    
     ]
   };
 
-  this.setState({chartOptions: finalData, isLoaded: true });
+  this.setState({chartOptions: finalData, isLoading: false });
   }
  
   render() {
-    const { chartOptions } = this.state;
+    const { chartOptions, isLoading } = this.state;
+    if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
  
     return (
       <div>

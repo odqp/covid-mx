@@ -18,10 +18,7 @@ class ExampleLine extends Component {
   componentDidMount()
   {
     axios.get('https://corona.lmao.ninja/v2/historical/mx')
-    .then(response => {
-      console.log(response);
-      
-      
+    .then(response => {      
 
       let recovered = response.data.timeline.cases;
       let labels = [];

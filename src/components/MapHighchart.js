@@ -6,6 +6,7 @@ import drilldown from "highcharts/modules/drilldown";
 import map from "highcharts/modules/map";
 import mxGeoData from "./mxGeoData";
 import axios from 'axios';
+import ReactSpinner from 'react-bootstrap-spinner'
 
 const dataConfig = [
     ['mx-ag', 1, "Aguascalientes"],
@@ -35,7 +36,7 @@ const dataConfig = [
     ['mx-si', 25, "Sinaloa"],
     ['mx-so', 26, "Sonora"],
     ['mx-tb', 27, "Tabasco"],
-    ['mx-tm', 28,"Tamaulipas"],
+    ['mx-tm', 28, "Tamaulipas"],
     ['mx-tl', 29, "Tlaxcala"],
     ['mx-ve', 30, "Veracruz"],
     ['mx-yu', 31, "Yucatán"],
@@ -43,143 +44,155 @@ const dataConfig = [
 ];
 
 class MapHighchart extends Component {
-    
+
     static formatTooltip(tooltip, data = this) {
-        return '<b>' + data.options.name + '<br/>' +            
+        return '<b>' + data.options.name + '<br/>' +
             'Casos: ' + data.value +
             '<br/> Negativos: ' + data.negativos +
             '<br/> Sospechosos: ' + data.sospechosos +
-            '<br/> Defunciones: ' + data.defunciones;            
-      }     
+            '<br/> Defunciones: ' + data.defunciones;
+    }
 
-  componentDidMount() {
-    // load modules
-    //drilldown(Highcharts);
-    //let data;
-    axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/estates')
-    .then(response => {
-       console.log(response);
-       let finaldata = response.data.Items[0].Data;
-       finaldata = finaldata.replace("[[","");
-       finaldata = finaldata.replace("]]","");
-       console.log("final Data 1");
-       console.log(finaldata);
 
-       let dataArray = finaldata.split("],[");
-       console.log(dataArray);
-    //   console.log(response.data.Items[0].Data);
-    //   data = response.data.Items[0].Data;
-    //let data = dataArray;
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: true,
+            charOptions: {}
+        };
+    }
 
-    const arrayProcessed = [];
+    async componentDidMount() {
+        // load modules
+        //drilldown(Highcharts);
+        //let data;
+        var options = {}
+        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/estates')
+            .then(response => {
+                let finaldata = response.data.Items[0].Data;
+                finaldata = finaldata.replace("[[", "");
+                finaldata = finaldata.replace("]]", "");
 
-    var counter = 0;
-    dataArray.forEach(function(item){
-        let estado =item.replace(/\"/g,"").split(",");
-                
-        arrayProcessed.push([parseInt(estado[0]), dataConfig[counter][2], parseInt(estado[4]), parseInt(estado[5]), parseInt(estado[6]), parseInt(estado[7]), dataConfig[counter][0]] );
-        counter++;
-    });
+                let dataArray = finaldata.split("],[");
 
-    let data = arrayProcessed;
 
-    const options = {
-      chart: {
-        height: 500, //(9 / 16 * 100) + '%',
-        map: "countries/mx/mx-all"
-      },
-      title: {
-        text: "Casos detectados por estado"
-      },
-      plotOptions: {
-        map: {
-          states: {
-            hover: {
-              //color: "#EEDD66"
-            }
-          }
-        }
-      },
-      legend: {
-        title: {
-            text: 'Individuals per km²'
-        },
-        align: 'left',
-        verticalAlign: 'bottom',
-        floating: true,
-        layout: 'vertical',
-        valueDecimals: 0,        
-        symbolRadius: 0,
-        symbolHeight: 14
-      },
-      colorAxis: {        
-        dataClassColor: 'category',
-        dataClasses: [{
-            to: 50,
-            color: "#fffde8"
-        }, {
-            from: 50,
-            to: 100,
-            color: "#fef582"
-        }, {
-            from: 100,
-            to: 501,
-            color: "#feb782"        
-        }, {
-            from: 500,
-            to: 1000,
-            color: "#B7371A"
-        }]
-      },
-      legend: {
-        layout: "vertical",
-        align: "right",
-        verticalAlign: "middle"
-      },      
-      subtitle: {
-        enabled: false,
-        floating: true,
-        align: "right",
-        y: 50,
-        style: {
-          fontSize: "16px"
-        }
-      },
-      series: [
-        {
-          mapData: mxGeoData,
-          data: data,
-          joinBy: ['hc-key', 'code'],
-          keys: ['id','name', 'value', 'negativos', 'sospechosos', 'defunciones', 'code'],
-          dataLabels: {
-            enabled: false,
-            format: "{point.name}"
-          },
-          tooltip: {
-            headerFormat: '',
-            pointFormatter: MapHighchart.formatTooltip
-        }
-        }
-      ],
-      mapNavigation: {
-        enabled: false,
-        buttonOptions: {
-          verticalAlign: "bottom"
-        }
-      }
-    };
+                const arrayProcessed = [];
 
-    this.chart = new HighMaps["Map"](findDOMNode(this), options);
-})
-  } 
+                var counter = 0;
+                dataArray.forEach(function (item) {
+                    let estado = item.replace(/\"/g, "").split(",");
 
-  componentWillUnmount() {
-    this.chart.destroy();
-  }
+                    arrayProcessed.push([parseInt(estado[0]), dataConfig[counter][2], parseInt(estado[4]), parseInt(estado[5]), parseInt(estado[6]), parseInt(estado[7]), dataConfig[counter][0]]);
+                    counter++;
+                });
 
-  render() {
-    return <div className="in-highchart" />;
-  }
+                let data = arrayProcessed;
+
+                options = {
+                    chart: {
+                        height: 500, //(9 / 16 * 100) + '%',
+                        map: "countries/mx/mx-all"
+                    },
+                    title: {
+                        text: "Casos detectados por estado"
+                    },
+                    plotOptions: {
+                        map: {
+                            states: {
+                                hover: {
+                                    //color: "#EEDD66"
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        title: {
+                            text: 'Individuals per km²'
+                        },
+                        align: 'left',
+                        verticalAlign: 'bottom',
+                        floating: true,
+                        layout: 'vertical',
+                        valueDecimals: 0,
+                        symbolRadius: 0,
+                        symbolHeight: 14
+                    },
+                    colorAxis: {
+                        dataClassColor: 'category',
+                        dataClasses: [{
+                            to: 50,
+                            color: "#fffde8"
+                        }, {
+                            from: 50,
+                            to: 100,
+                            color: "#fef582"
+                        }, {
+                            from: 100,
+                            to: 501,
+                            color: "#feb782"
+                        }, {
+                            from: 500,
+                            to: 1000,
+                            color: "#B7371A"
+                        }]
+                    },
+                    legend: {
+                        align: 'left',
+                        floating: true,
+                        layout: 'vertical',
+                        verticalAlign: 'bottom',
+                        reversed: true
+                    },
+                    subtitle: {
+                        enabled: false,
+                        floating: true,
+                        align: "right",
+                        y: 50,
+                        style: {
+                            fontSize: "16px"
+                        }
+                    },
+                    series: [
+                        {
+                            mapData: mxGeoData,
+                            data: data,
+                            joinBy: ['hc-key', 'code'],
+                            keys: ['id', 'name', 'value', 'negativos', 'sospechosos', 'defunciones', 'code'],
+                            dataLabels: {
+                                enabled: false,
+                                format: "{point.name}"
+                            },
+                            tooltip: {
+                                headerFormat: '',
+                                pointFormatter: MapHighchart.formatTooltip
+                            }
+                        }
+                    ],
+                    mapNavigation: {
+                        enabled: false,
+                        buttonOptions: {
+                            verticalAlign: "bottom"
+                        }
+                    }
+                };
+
+
+            })
+
+        this.setState({ isLoading: false, charOptions: options });
+        this.chart = new HighMaps["Map"](findDOMNode(this), options);
+    }
+
+    componentWillUnmount() {
+        this.chart.destroy();
+    }
+
+    render() {
+        const { isLoading, charOptions } = this.state;
+        if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
+
+        return (<div className="in-highchart" />);
+    }
 }
 
 export default MapHighchart;
