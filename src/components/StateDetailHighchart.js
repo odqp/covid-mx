@@ -142,7 +142,7 @@ class StateDetailHighchart extends Component {
                             data: cases,
                             color: "#feb782"
                         }, {
-                            name: 'Perdidas',
+                            name: 'Defunciones',
                             data: deaths,
                             color: "#262524"
                         }
