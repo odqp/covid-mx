@@ -32,8 +32,35 @@ class AreaHighchart extends Component {
         };
     }
 
-    componentDidMount() {
-        axios.get('https://corona.lmao.ninja/v2/historical/mx')
+    async componentDidMount() {
+
+        let lastCases = 0;
+        let lastDeaths = 0;
+        let lastRecovery = 0;
+        let finalData = {};
+
+        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/estates')
+            .then(response => {
+                let statedata = response.data.Items[0].Data;
+                statedata = statedata.replace("[[", "");
+                statedata = statedata.replace("]]", "");
+
+                let dataArray = statedata.split("],[");
+
+                const arrayProcessed = [];
+
+                dataArray.forEach(function (item) {
+                    let estado = item.replace(/\"/g, "").split(",");
+                    arrayProcessed.push([parseInt(estado[0]), parseInt(estado[4]), parseInt(estado[7])]);
+                });               
+                               
+                arrayProcessed.forEach(function (item) {                    
+                    lastCases += item[1];
+                    lastDeaths += item[2];
+                });                
+            })
+
+        await axios.get('https://corona.lmao.ninja/v2/historical/mx')
             .then(response => {
                 let cases = response.data.timeline.cases;
                 let recovered = response.data.timeline.recovered;
@@ -53,8 +80,17 @@ class AreaHighchart extends Component {
                         activesValues.push(cases[key] - recovered[key] - deaths[key])
                     }
                 }
-
-                let finalData = {
+                
+                let lastIndex = casesValues.length-1;
+                if(!(casesValues[lastIndex] == lastCases && deathsValues[lastIndex] == lastDeaths)){
+                    casesValues.push(lastCases);
+                    deathsValues.push(lastDeaths);
+                    recoveredValues.push(recoveredValues[recoveredValues.length-1]);
+                    activesValues.push(casesValues[lastIndex] - recoveredValues[lastIndex] - deathsValues[lastIndex]);                    
+                    labels.unshift("");
+                }
+                
+                finalData = {
                     chart: {
                         height: 500, //(9 / 16 * 100) + '%',
                         type: 'area'
@@ -121,10 +157,9 @@ class AreaHighchart extends Component {
                         data: deathsValues,
                         color: '#262524'
                     }]
-                };
-
-                this.setState({ chartOptions: finalData, isLoading: false });
+                };                
             })
+            this.setState({ chartOptions: finalData, isLoading: false });
 
     }
 
