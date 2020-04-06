@@ -101,17 +101,15 @@ class StateDetailHighchart extends Component {
                     xAxis: {
                         categories: statesLabels,
                         title: {
-                            text: null
+                            text: null                            
                         }
                     },
                     yAxis: {
-                        min: 0,                        
+                        min: 0,
                         labels: {
                             overflow: 'justify'
-                        }
-                    },
-                    tooltip: {
-                        valueSuffix: ' millions'
+                        },
+                        title: null
                     },
                     plotOptions: {
                         bar: {
@@ -123,9 +121,9 @@ class StateDetailHighchart extends Component {
                     legend: {
                         layout: 'vertical',
                         align: 'right',
-                        verticalAlign: 'top',
-                        x: -40,
-                        y: 80,
+                        verticalAlign: 'bottom',
+                        x: -10,
+                        y: -60,
                         floating: true,
                         borderWidth: 1,
                         backgroundColor:
