@@ -7,6 +7,7 @@ import AgeHighchart from "./components/AgeHighchart"
 import CountriesCasesHighchart from "./components/CountriesCasesHighchart"
 import CountriesDeathsHighchart from "./components/CountriesDeathsHighchart"
 import AgeTotalHichchart from "./components/AgeTotalHichchart"
+import ReactGA from 'react-ga';
 
 import { Col, Row, Container, Card } from "react-bootstrap";
 
@@ -18,6 +19,10 @@ class App extends Component {
       isLoading: false,
       chartData: {}
     }
+  }
+  
+  componentDidMount() {
+    ReactGA.initialize('UA-162747098-1');
   }
 
   render() {
