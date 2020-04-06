@@ -6,7 +6,7 @@ import { dateFormater } from "../utils/utils"
 import ReactSpinner from 'react-bootstrap-spinner'
 
 class CountriesCasesHighchart extends Component {
-
+ 
   static formatTooltip(tooltip, x = this.x, points = this.points) {
     var toolText = '<b>[' + x + '] --> ' + points[0].total + '</b><br>';
     points.forEach((point) =>
