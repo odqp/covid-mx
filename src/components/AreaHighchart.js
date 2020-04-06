@@ -81,7 +81,7 @@ class AreaHighchart extends Component {
                     }
                 }
                 
-                let lastIndex = casesValues.length-1;
+                let lastIndex = casesValues.length;
                 if(!(casesValues[lastIndex] == lastCases && deathsValues[lastIndex] == lastDeaths)){
                     casesValues.push(lastCases);
                     deathsValues.push(lastDeaths);
