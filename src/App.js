@@ -106,11 +106,6 @@ class App extends Component {
                   [https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports]
                   <br />
                   [https://www.worldometers.info/coronavirus]
-                  <br />
-                  [https://github.com/novelcovid/api]
-                  <br />
-                  [https://thevirustracker.com/api]
-
                 </Card.Body>
                 </Card>
               </Col>
