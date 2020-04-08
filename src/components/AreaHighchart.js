@@ -39,57 +39,28 @@ class AreaHighchart extends Component {
         let lastRecovery = 0;
         let finalData = {};
 
-        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/estates')
+        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=mexico')
             .then(response => {
-                let statedata = response.data.Items[0].Data;
-                statedata = statedata.replace("[[", "");
-                statedata = statedata.replace("]]", "");
+                let casesArray = response.data.Items;
 
-                let dataArray = statedata.split("],[");
+                var sortedArray = casesArray.sort(function (a, b) {
+                    return a["SortId"] - b["SortId"];
+                });
 
-                const arrayProcessed = [];
-
-                dataArray.forEach(function (item) {
-                    let estado = item.replace(/\"/g, "").split(",");
-                    arrayProcessed.push([parseInt(estado[0]), parseInt(estado[4]), parseInt(estado[7])]);
-                });               
-                               
-                arrayProcessed.forEach(function (item) {                    
-                    lastCases += item[1];
-                    lastDeaths += item[2];
-                });                
-            })
-
-        await axios.get('https://corona.lmao.ninja/v2/historical/mx')
-            .then(response => {
-                let cases = response.data.timeline.cases;
-                let recovered = response.data.timeline.recovered;
-                let deaths = response.data.timeline.deaths;
                 let labels = [];
                 let recoveredValues = []
                 let casesValues = []
                 let deathsValues = []
                 let activesValues = []
 
-                for (var key in cases) {
-                    if (cases[key] > 0) {
-                        labels.push(dateFormater(key))
-                        casesValues.push(cases[key])
-                        recoveredValues.push(recovered[key])
-                        deathsValues.push(deaths[key])
-                        activesValues.push(cases[key] - recovered[key] - deaths[key])
-                    }
-                }
-                
-                let lastIndex = casesValues.length;
-                if(!(casesValues[lastIndex-1] == lastCases && deathsValues[lastIndex-1] == lastDeaths)){
-                    casesValues.push(lastCases);
-                    deathsValues.push(lastDeaths);
-                    recoveredValues.push(recoveredValues[recoveredValues.length-1]);
-                    activesValues.push(casesValues[lastIndex] - recoveredValues[lastIndex] - deathsValues[lastIndex]);                    
-                    labels.unshift("");
-                }
-                
+                sortedArray.forEach(function (item) {
+                    labels.push(dateFormater(item.Date))
+                    casesValues.push(parseInt(item.Cases))
+                    recoveredValues.push(parseInt(item.Recoveries))
+                    deathsValues.push(parseInt(item.Deaths))
+                    activesValues.push(parseInt(item.Cases) - parseInt(item.Recoveries) - parseInt(item.Deaths))
+                });
+
                 finalData = {
                     chart: {
                         height: 500, //(9 / 16 * 100) + '%',
@@ -97,7 +68,7 @@ class AreaHighchart extends Component {
                     },
                     title: {
                         text: 'Casos activos, recuperados y defunciones en México',
-                        style: {                         
+                        style: {
                             fontWeight: 'bold',
                             fontSize: '22px'
                         }
@@ -157,9 +128,9 @@ class AreaHighchart extends Component {
                         data: deathsValues,
                         color: '#262524'
                     }]
-                };                
+                };
             })
-            this.setState({ chartOptions: finalData, isLoading: false });
+        this.setState({ chartOptions: finalData, isLoading: false });
 
     }
 
