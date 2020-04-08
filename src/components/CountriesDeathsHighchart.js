@@ -36,65 +36,74 @@ class CountriesDeathsHighchart extends Component {
     let labels = []; 
     var countMXDays = 0;
     
-    await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=mx')
-    .then(response => {
-      let casesMx = response.data.timelineitems[0];      
-           
-      let casesMxValues = [];
-     
-      for (var key in casesMx) {
-        if(key != "stat"){
-            //labels.push(dateFormater(key))
-            casesMxValues.push(casesMx[key].total_deaths)
+    await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=mexico')
+      .then(response => {
+        let casesArray = response.data.Items;
 
-        }
-      }
-      valoresMX = casesMxValues;
-      countMXDays = casesMxValues.length-1;
-    })    
+        let casesValues = [];
 
-    await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=es')
-    .then(response => {
-      let casesEspa = response.data.timelineitems[0];
-           
-      let casesEspaValues = [];
-     
-      for (var key in casesEspa) {
-        if(key != "stat"){          
-            labels.push(key)
-            casesEspaValues.push(casesEspa[key].total_deaths)            
-          }
-      }
-      valoresEspa = casesEspaValues;      
-    })
+        var sortedArray = casesArray.sort(function (a, b) {
+          return a["SortId"] - b["SortId"] ;
+      });
 
-    await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=it')
-    .then(response => {
-      let casesItaly = response.data.timelineitems[0];      
-           
-      let casesItalyValues = [];
-     
-      for (var key in casesItaly) {
-        if(key != "stat"){
-            casesItalyValues.push(casesItaly[key].total_deaths)            
-          }
-      }
-      valoresItaly = casesItalyValues;      
-    })
+      sortedArray.forEach(function (item) {
+          casesValues.push(parseInt(item.Deaths))
+        });
 
-    await axios.get('https://api.thevirustracker.com/free-api?countryTimeline=us')
-    .then(response => {
-      let cases = response.data.timelineitems[0];      
-           
-      let casesValues = [];
-     
-      for (var key in cases) {
-        if(key != "stat"){
-            casesValues.push(cases[key].total_deaths)            
-          }
-      }
-      valoresUSA = casesValues;      
-    })
+        valoresMX = casesValues;
+        countMXDays = casesValues.length;
+      })
+
+      await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=italia')
+      .then(response => {
+        let casesArray = response.data.Items;
+
+        let casesValues = [];
+
+        var sortedArray = casesArray.sort(function (a, b) {
+          return a["SortId"] - b["SortId"] ;
+      });
+
+      sortedArray.forEach(function (item) {
+          casesValues.push(parseInt(item.Deaths))
+        });
+
+        valoresItaly = casesValues;        
+      })  
+
+      await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=espana')
+      .then(response => {
+        let casesArray = response.data.Items;
+
+        let casesValues = [];
+
+        var sortedArray = casesArray.sort(function (a, b) {
+          return a["SortId"] - b["SortId"] ;
+      });
+
+      sortedArray.forEach(function (item) {
+          casesValues.push(parseInt(item.Deaths))
+        });
+
+        valoresEspa = casesValues;        
+      }) 
+
+      await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=usa')
+      .then(response => {
+        let casesArray = response.data.Items;
+
+        let casesValues = [];
+
+        var sortedArray = casesArray.sort(function (a, b) {
+          return a["SortId"] - b["SortId"] ;
+      });
+
+      sortedArray.forEach(function (item) {
+          casesValues.push(parseInt(item.Deaths))
+        });
+
+        valoresUSA = casesValues;        
+      }) 
 
 
     let finalData = {
