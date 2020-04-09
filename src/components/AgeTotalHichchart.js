@@ -49,6 +49,9 @@ class AgeTotalHichchart extends Component {
                 min: 0,
                 title: {
                     enabled: false
+                },                
+                stackLabels: {
+                    enabled: true                    
                 }
             },
             tooltip: {

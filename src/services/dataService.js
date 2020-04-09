@@ -64,7 +64,7 @@ class dataService {
                 let tempdata = response.data.Items;                
 
                 sortedArray = tempdata.sort(function (a, b) {
-                    return a["Id"] - b["Id"];
+                    return a["SortId"] - b["SortId"];
                 });                
             })
 

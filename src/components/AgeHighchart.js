@@ -54,7 +54,7 @@ class AgeHighchart extends Component {
                 reversed: false,
                 labels: {
                     step: 1
-                }
+                }                
             }],
             yAxis: {
                 title: {
@@ -63,6 +63,12 @@ class AgeHighchart extends Component {
                 labels: {
                     formatter: function () {
                         return Math.abs(this.value);
+                    }
+                },
+                stackLabels: {
+                    enabled: true,
+                    formatter: function () {
+                        return Math.abs(this.total);
                     }
                 }
             },
