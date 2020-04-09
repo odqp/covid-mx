@@ -16,6 +16,12 @@ import { Col, Row, Container, Card, Navbar, NavItem, NavDropdown, MenuItem, Nav 
 import dataService from "./services/dataService"
 import constants from "./utils/consts"
 import ReactSpinner from 'react-bootstrap-spinner'
+import { dateFormater } from "./utils/utils"
+
+
+var summaryStyle = {
+  fontSize: "2vw"
+};
 
 class App extends Component {
 
@@ -31,8 +37,10 @@ class App extends Component {
       statesData: [],
       totalCases: 0,
       totalDeaths: 0,
-      totalPossibles: 0
-
+      totalPossibles: 0,
+      newCases: 0,
+      newDeaths : 0,
+      lastDate : ""
     }
 
     ReactGA.initialize(this.constants.GAID);
@@ -41,7 +49,12 @@ class App extends Component {
 
   async getMexico() {
     await this.service.getMexico().then(items => {
-      this.setState({ mexicoData: items });
+      
+      let newCases = parseInt(items[items.length-1].Cases) - parseInt(items[items.length-2].Cases);
+      let newDeaths = parseInt(items[items.length-1].Deaths) - parseInt(items[items.length-2].Deaths);
+      let lastDate = dateFormater(items[items.length-1].Date);
+
+      this.setState({ mexicoData: items, newCases: newCases, newDeaths: newDeaths, lastDate: lastDate });      
     }
     );
   }
@@ -80,8 +93,10 @@ class App extends Component {
     this.setState({ isLoading: false });
   }
 
+  
+
   render() {
-    const { mexicoData, isLoading, ageData, totalCases, totalDeaths, totalPossibles } = this.state
+    const { mexicoData, isLoading, ageData, totalCases, totalDeaths, totalPossibles, newCases, newDeaths, lastDate } = this.state
 
     if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
 
@@ -89,7 +104,7 @@ class App extends Component {
 
       <div className="App">
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">
+          <Navbar.Brand>
             <img
               alt=""
               src={process.env.PUBLIC_URL + '/logo192.png'}
@@ -112,10 +127,7 @@ class App extends Component {
                         bg={'danger'}
                         text={'white'}
                       >
-                        <Card.Header>Detectados</Card.Header>
-                        <Card.Body>                          
-                          <Card.Title>{totalCases}</Card.Title>
-                        </Card.Body>
+                        <Card.Header><b>Detectados: {totalCases}</b></Card.Header>                        
                       </Card>
                     </Col>
                     <Col sm={2}>
@@ -123,10 +135,7 @@ class App extends Component {
                         bg={'secondary'}
                         text={'white'}
                       >
-                        <Card.Header>Defunciones</Card.Header>
-                        <Card.Body>                          
-                          <Card.Title>{totalDeaths}</Card.Title>
-                        </Card.Body>
+                        <Card.Header><b>Defunciones: {totalDeaths}</b></Card.Header>                        
                       </Card>
                     </Col>
                     <Col sm={2}>
@@ -134,10 +143,7 @@ class App extends Component {
                         bg={'warning'}
                         text={'white'}
                       >
-                        <Card.Header>Sospechosos</Card.Header>                        
-                        <Card.Body>                          
-                          <Card.Title>{totalPossibles}</Card.Title>
-                        </Card.Body>
+                        <Card.Header><b>Sospechosos: {totalPossibles}</b></Card.Header>                        
                       </Card>
                     </Col>
                     <Col sm={2}>
@@ -145,32 +151,23 @@ class App extends Component {
                         bg={'danger'}
                         text={'white'}
                       >
-                        <Card.Header>Nuevos</Card.Header>
-                        <Card.Body>                          
-                          <Card.Title>+ 1233 </Card.Title>
-                        </Card.Body>
+                        <Card.Header><b>Nuevos: {newCases}</b></Card.Header>                        
                       </Card>
                     </Col>
                     <Col sm={2}>
                       <Card
                         bg={'secondary'}
-                        text={'white'}
+                        text={'white'}                        
                       >
-                        <Card.Header>Nuevas defunciones</Card.Header>
-                        <Card.Body>
-                          <Card.Title> +135 </Card.Title>
-                        </Card.Body>
+                        <Card.Header><b>Nuevas defunciones: {newDeaths}</b></Card.Header>                        
                       </Card>
                     </Col>
                     <Col sm={2}>
                       <Card
                         bg={'info'}
-                        text={'white'}
+                        text={'white'}                        
                       >
-                        <Card.Header>Fecha</Card.Header>
-                        <Card.Body>
-                          <Card.Title>8/4/2020 </Card.Title>
-                        </Card.Body>
+                        <Card.Header><b >Fecha Actualización: {lastDate}</b></Card.Header>                        
                       </Card>
                     </Col>
                   </Row>
@@ -281,7 +278,7 @@ class App extends Component {
         </Container>
 
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="https://twitter.com/MexicoCovid " target="_blank">
             <img
               alt=""
               src={process.env.PUBLIC_URL + '/twitter.png'}
@@ -289,7 +286,7 @@ class App extends Component {
               height="30"
               className="d-inline-block align-top"
             />{' '}
-              <a href="https://twitter.com/MexicoCovid">@MexicoCovid</a>
+              @MexicoCovid
             </Navbar.Brand>
         </Navbar>
       </div >
