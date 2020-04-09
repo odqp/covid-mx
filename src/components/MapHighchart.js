@@ -53,18 +53,6 @@ class MapHighchart extends Component {
                     }
                 }
             },
-            legend: {
-                title: {
-                    enabled: false
-                },
-                align: 'left',
-                verticalAlign: 'bottom',
-                floating: true,
-                layout: 'vertical',
-                valueDecimals: 0,
-                symbolRadius: 0,
-                symbolHeight: 14
-            },
             colorAxis: {
                 dataClassColor: 'category',
                 dataClasses: [{
@@ -89,7 +77,8 @@ class MapHighchart extends Component {
                 floating: true,
                 layout: 'vertical',
                 verticalAlign: 'bottom',
-                reversed: true
+                reversed: true,
+                valueDecimals: 0,
             },
             subtitle: {
                 enabled: false,
