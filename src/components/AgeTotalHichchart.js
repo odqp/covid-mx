@@ -40,8 +40,7 @@ class AgeTotalHichchart extends Component {
 
                 finalData = {
                     chart: {
-                        type: 'column',
-                        height: 500,
+                        type: 'column'
                     },
                     title: {
                         text: 'Casos detectados por edad',

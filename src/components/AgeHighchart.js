@@ -44,8 +44,7 @@ class AgeHighchart extends Component {
                 var categories = ageLabels;
 
                 finalData = {
-                    chart: {
-                        height: 500,
+                    chart: {                        
                         type: 'bar'
                     },
                     title: {
@@ -58,14 +57,6 @@ class AgeHighchart extends Component {
                     xAxis: [{
                         categories: categories,
                         reversed: false,
-                        labels: {
-                            step: 1
-                        }
-                    }, { // mirror axis on right side
-                        opposite: true,
-                        reversed: false,
-                        categories: categories,
-                        linkedTo: 0,
                         labels: {
                             step: 1
                         }
@@ -87,7 +78,7 @@ class AgeHighchart extends Component {
                         },
                         bar: {
                             dataLabels: {
-                                enabled: true,
+                                enabled: false,
                                 formatter: function () {
                                     return Math.abs(this.point.y);
                                 }

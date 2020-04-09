@@ -110,8 +110,8 @@ class MapHighchart extends Component {
                         }
                     },
                     legend: {
-                        title: {
-                            text: 'Individuals per km²'
+                        title: {                            
+                            enabled: false
                         },
                         align: 'left',
                         verticalAlign: 'bottom',
@@ -132,7 +132,7 @@ class MapHighchart extends Component {
                             color: "#fef582"
                         }, {
                             from: 100,
-                            to: 501,
+                            to: 500,
                             color: "#feb782"
                         }, {
                             from: 500,

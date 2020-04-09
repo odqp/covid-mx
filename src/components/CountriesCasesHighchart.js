@@ -110,7 +110,7 @@ class CountriesCasesHighchart extends Component {
         type: 'line'
       },
       title: {
-        text: 'Casos dectectados por día trascurrido',
+        text: 'Casos dectectados por día trascurrido en comparación a otros países',
         style: {                         
             fontWeight: 'bold',
             fontSize: '22px'

@@ -112,7 +112,7 @@ class CountriesDeathsHighchart extends Component {
           type: 'line'
       },
       title: {
-          text: 'Defunciones registradas por día trascurrido',
+          text: 'Defunciones registradas por día trascurrido en comparación a otros países',
           style: {                         
               fontWeight: 'bold',
               fontSize: '22px'
