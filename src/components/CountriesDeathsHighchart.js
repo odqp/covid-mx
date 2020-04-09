@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import axios from 'axios';
-import {dateFormater} from "../utils/utils"
 import ReactSpinner from 'react-bootstrap-spinner'
  
 class CountriesDeathsHighchart extends Component {
@@ -23,7 +21,11 @@ class CountriesDeathsHighchart extends Component {
       chartOptions: {},
       mxValues: [],
       hoverData: null,
-      isLoading: true
+      isLoading: true,
+      mexicoData: props.mexicoData,
+      italyData: props.italyData,
+      spainData: props.spainData,
+      usaData: props.usaData
     };
   }
  
@@ -33,78 +35,23 @@ class CountriesDeathsHighchart extends Component {
     var valoresEspa = [];
     var valoresItaly = [];
     var valoresUSA = [];
-    let labels = []; 
-    var countMXDays = 0;
+    var countMXDays = this.state.mexicoData.length;
     
-    await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=mexico')
-      .then(response => {
-        let casesArray = response.data.Items;
+    this.state.mexicoData.forEach(function (item) {
+      valoresMX.push(parseInt(item.Deaths))
+    });    
 
-        let casesValues = [];
+    this.state.spainData.forEach(function (item) {
+      valoresEspa.push(parseInt(item.Deaths))
+    });
 
-        var sortedArray = casesArray.sort(function (a, b) {
-          return a["SortId"] - b["SortId"] ;
-      });
+    this.state.italyData.forEach(function (item) {
+      valoresItaly.push(parseInt(item.Deaths))
+    });
 
-      sortedArray.forEach(function (item) {
-          casesValues.push(parseInt(item.Deaths))
-        });
-
-        valoresMX = casesValues;
-        countMXDays = casesValues.length;
-      })
-
-      await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=italia')
-      .then(response => {
-        let casesArray = response.data.Items;
-
-        let casesValues = [];
-
-        var sortedArray = casesArray.sort(function (a, b) {
-          return a["SortId"] - b["SortId"] ;
-      });
-
-      sortedArray.forEach(function (item) {
-          casesValues.push(parseInt(item.Deaths))
-        });
-
-        valoresItaly = casesValues;        
-      })  
-
-      await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=espana')
-      .then(response => {
-        let casesArray = response.data.Items;
-
-        let casesValues = [];
-
-        var sortedArray = casesArray.sort(function (a, b) {
-          return a["SortId"] - b["SortId"] ;
-      });
-
-      sortedArray.forEach(function (item) {
-          casesValues.push(parseInt(item.Deaths))
-        });
-
-        valoresEspa = casesValues;        
-      }) 
-
-      await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=usa')
-      .then(response => {
-        let casesArray = response.data.Items;
-
-        let casesValues = [];
-
-        var sortedArray = casesArray.sort(function (a, b) {
-          return a["SortId"] - b["SortId"] ;
-      });
-
-      sortedArray.forEach(function (item) {
-          casesValues.push(parseInt(item.Deaths))
-        });
-
-        valoresUSA = casesValues;        
-      }) 
-
+    this.state.usaData.forEach(function (item) {
+      valoresUSA.push(parseInt(item.Deaths))
+    });
 
     let finalData = {
       chart: {

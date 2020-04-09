@@ -18,7 +18,7 @@ const dataConfig = [
     ['mx-gj', 11, "Guanajuato"],
     ['mx-gr', 12, "Guerrero"],
     ['mx-hg', 13, "Hidalgo"],
-    ['mx-ja', 14, "Jalisco"],    
+    ['mx-ja', 14, "Jalisco"],
     ['mx-mx', 15, "Estado de México"],
     ['mx-mi', 16, "Michoacán"],
     ['mx-mo', 17, "Morelos"],
@@ -47,113 +47,90 @@ class StateDetailHighchart extends Component {
             // To avoid unnecessary update keep all options in the state.
             chartOptions: {},
             hoverData: null,
-            isLoading: true
+            isLoading: true,
+            statesData: props.statesData
         };
     }
 
     async componentDidMount() {
         var finaldata = {};
-        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/estates')
-            .then(response => {
-                let temdata = response.data.Items[0].Data;
-                temdata = temdata.replace("[[", "");
-                temdata = temdata.replace("]]", "");
+        let sortedArray = this.state.statesData;
+        let statesLabels = []
+        let cases = []
+        let deaths = []
 
-                let dataArray = temdata.split("],[");
+        sortedArray.forEach(function (item) {
+            statesLabels.push(item[1]);
+            cases.push(parseInt(item[2]));
+            deaths.push(parseInt(item[5]));
+        });
 
+        finaldata = {
+            chart: {
+                height: 700,
+                type: 'bar'
+            },
+            title: {
+                text: 'Casos y defunciones registradas por estado',
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '22px'
+                }
+            },
+            xAxis: {
+                categories: statesLabels,
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                labels: {
+                    overflow: 'justify'
+                },
+                title: null
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'bottom',
+                x: -10,
+                y: -60,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+                {
+                    id: 'mainSeries',
+                    name: 'Casos',
+                    data: cases,
+                    color: "#feb782"
+                }, {
+                    name: 'Defunciones',
+                    data: deaths,
+                    color: "#262524"
+                }
+            ]
+        };
 
-
-                let statesLabels = [];
-                let cases = [];
-                let deaths = [];
-                var counter = 0;
-
-
-                var arrayOfArray = [];
-                dataArray.forEach(function (item) {
-                    let estado = item.replace(/\"/g, "").split(",");
-                    arrayOfArray.push([parseInt(estado[0]), dataConfig[counter][2], parseInt(estado[4]), parseInt(estado[5]), parseInt(estado[6]), parseInt(estado[7]), dataConfig[counter][0]]);
-                    counter++;
-                });
-
-                var sortedArray = arrayOfArray.sort(function (a, b) {
-                    return b[2] - a[2];
-                });
-
-                sortedArray.forEach(function (item) {
-                    statesLabels.push(item[1]);
-                    cases.push(parseInt(item[2]));
-                    deaths.push(parseInt(item[5]));
-                });
-
-                finaldata = {
-                    chart: {
-                        height: 700,
-                        type: 'bar'
-                    },
-                    title: {
-                        text: 'Casos y defunciones registradas por estado',
-                        style: {                         
-                            fontWeight: 'bold',
-                            fontSize: '22px'
-                        }
-                    },
-                    xAxis: {
-                        categories: statesLabels,
-                        title: {
-                            text: null                            
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        labels: {
-                            overflow: 'justify'
-                        },
-                        title: null
-                    },
-                    plotOptions: {
-                        bar: {
-                            dataLabels: {
-                                enabled: true
-                            }
-                        }
-                    },
-                    legend: {
-                        layout: 'vertical',
-                        align: 'right',
-                        verticalAlign: 'bottom',
-                        x: -10,
-                        y: -60,
-                        floating: true,
-                        borderWidth: 1,
-                        backgroundColor:
-                            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                        shadow: true
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    series: [
-                        {
-                            id: 'mainSeries',
-                            name: 'Casos',
-                            data: cases,
-                            color: "#feb782"
-                        }, {
-                            name: 'Defunciones',
-                            data: deaths,
-                            color: "#262524"
-                        }
-                    ]
-                };                
-            })
-
-            this.setState({ chartOptions: finaldata, isLoading: false });
-
+        this.setState({ chartOptions: finaldata, isLoading: false });
     }
 
     render() {
-        const { isLoading , chartOptions} = this.state;
+        const { isLoading, chartOptions } = this.state;
         if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
 
         return (

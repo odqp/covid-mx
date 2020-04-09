@@ -14,98 +14,93 @@ class AgeHighchart extends Component {
             // To avoid unnecessary update keep all options in the state.
             chartOptions: {},
             hoverData: null,
-            isLoading: true
+            isLoading: true,
+            ageData: props.ageData
         };
     }
 
     async componentDidMount() {
         let finalData = {}
-        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/edades')
-            .then(response => {
-                let tempdata = response.data.Items;
 
-                let ageLabels = [];
-                let maleCases = [];
-                let femaleCases = [];
-                let maleCasesNegaives = [];
+        let sortedArray = this.state.ageData;
 
-                var sortedArray = tempdata.sort(function (a, b) {
-                    return b["Id"] - a["Id"];
-                });
+        let ageLabels = [];
+        let maleCases = [];
+        let femaleCases = [];
+        let maleCasesNegaives = [];        
 
-                sortedArray.forEach(function (item) {
-                    ageLabels.push(item["Edad"]);
-                    maleCases.push(parseInt(item["M"]));
-                    femaleCases.push(parseInt(item["F"]));
-                    maleCasesNegaives.push(parseInt(item["M"]) * -1);
-                });
+        sortedArray.forEach(function (item) {
+            ageLabels.push(item["Edad"]);
+            maleCases.push(parseInt(item["M"]));
+            femaleCases.push(parseInt(item["F"]));
+            maleCasesNegaives.push(parseInt(item["M"]) * -1);
+        });
 
+        var categories = ageLabels;
 
-                var categories = ageLabels;
+        finalData = {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Casos detectados por edad y sexo',
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '22px'
+                }
+            },
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1
+                }
+            }],
+            yAxis: {
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function () {
+                        return Math.abs(this.value);
+                    }
+                }
+            },
 
-                finalData = {
-                    chart: {                        
-                        type: 'bar'
-                    },
-                    title: {
-                        text: 'Casos detectados por edad y sexo',
-                        style: {                         
-                            fontWeight: 'bold',
-                            fontSize: '22px'
-                        }
-                    },
-                    xAxis: [{
-                        categories: categories,
-                        reversed: false,
-                        labels: {
-                            step: 1
-                        }
-                    }],
-                    yAxis: {
-                        title: {
-                            text: null
-                        },
-                        labels: {
-                            formatter: function () {
-                                return Math.abs(this.value);
-                            }
-                        }
-                    },
-
-                    plotOptions: {
-                        series: {
-                            stacking: 'normal'
-                        },
-                        bar: {
-                            dataLabels: {
-                                enabled: false,
-                                formatter: function () {
-                                    return Math.abs(this.point.y);
-                                }
-                            }
-                        }
-                    },
-
-                    tooltip: {
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                },
+                bar: {
+                    dataLabels: {
+                        enabled: false,
                         formatter: function () {
-                            return '<b>' + this.series.name + ', edad ' + this.point.category + '</b><br/>' +
-                                'Casos confirmados: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                            return Math.abs(this.point.y);
                         }
-                    },
+                    }
+                }
+            },
 
-                    series: [{
-                        name: 'Masculino',
-                        data: maleCasesNegaives,
-                        color: "#0860b6"
-                    }, {
-                        name: 'Femenino',
-                        data: femaleCases,
-                        color: "#5d08b6"
-                    }]
-                };                
-            })
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + ', edad ' + this.point.category + '</b><br/>' +
+                        'Casos confirmados: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                }
+            },
 
-            this.setState({ chartOptions: finalData, isLoading: false });
+            series: [{
+                name: 'Masculino',
+                data: maleCasesNegaives,
+                color: "#0860b6"
+            }, {
+                name: 'Femenino',
+                data: femaleCases,
+                color: "#5d08b6"
+            }]
+        };
+
+
+        this.setState({ chartOptions: finalData, isLoading: false });
     }
 
     render() {

@@ -28,108 +28,98 @@ class AreaHighchart extends Component {
             // To avoid unnecessary update keep all options in the state.
             chartOptions: {},
             hoverData: null,
-            isLoading: true
+            isLoading: true,
+            mexicoData: props.mexicoData
         };
     }
 
     async componentDidMount() {
+       let finalData = {};
+        let labels = [];
+        let recoveredValues = []
+        let casesValues = []
+        let deathsValues = []
+        let activesValues = []
 
-        let lastCases = 0;
-        let lastDeaths = 0;
-        let lastRecovery = 0;
-        let finalData = {};
+        let sortedArray = this.state.mexicoData
 
-        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/country?name=mexico')
-            .then(response => {
-                let casesArray = response.data.Items;
+        sortedArray.forEach(function (item) {
+            labels.push(dateFormater(item.Date))
+            casesValues.push(parseInt(item.Cases))
+            recoveredValues.push(parseInt(item.Recoveries))
+            deathsValues.push(parseInt(item.Deaths))
+            activesValues.push(parseInt(item.Cases) - parseInt(item.Recoveries) - parseInt(item.Deaths))
+        });
 
-                var sortedArray = casesArray.sort(function (a, b) {
-                    return a["SortId"] - b["SortId"];
-                });
-
-                let labels = [];
-                let recoveredValues = []
-                let casesValues = []
-                let deathsValues = []
-                let activesValues = []
-
-                sortedArray.forEach(function (item) {
-                    labels.push(dateFormater(item.Date))
-                    casesValues.push(parseInt(item.Cases))
-                    recoveredValues.push(parseInt(item.Recoveries))
-                    deathsValues.push(parseInt(item.Deaths))
-                    activesValues.push(parseInt(item.Cases) - parseInt(item.Recoveries) - parseInt(item.Deaths))
-                });
-
-                finalData = {
-                    chart: {
-                        height: 500, //(9 / 16 * 100) + '%',
-                        type: 'area'
-                    },
-                    title: {
-                        text: 'Casos activos, recuperados y defunciones en México',
-                        style: {
-                            fontWeight: 'bold',
-                            fontSize: '22px'
+        finalData = {
+            chart: {
+                height: 500, //(9 / 16 * 100) + '%',
+                type: 'area'
+            },
+            title: {
+                text: 'Casos activos, recuperados y defunciones en México',
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '22px'
+                }
+            },
+            xAxis: {
+                categories: labels,
+                tickmarkPlacement: 'off',
+                title: {
+                    enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    enabled: false
+                }
+            },
+            tooltip: {
+                split: true,
+                formatter: AreaHighchart.formatTooltip,
+                crosshairs: true
+                //shared: true
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666',
+                        symbol: 'circle',
+                        radius: 2
+                    }
+                },
+                series: {
+                    events: {
+                        legendItemClick: function () {
+                            return false;
                         }
-                    },
-                    xAxis: {
-                        categories: labels,
-                        tickmarkPlacement: 'off',
-                        title: {
-                            enabled: false
-                        }
-                    },
-                    yAxis: {
-                        title: {
-                            enabled: false
-                        }
-                    },
-                    tooltip: {
-                        split: true,
-                        formatter: AreaHighchart.formatTooltip,
-                        crosshairs: true
-                        //shared: true
-                    },
-                    plotOptions: {
-                        area: {
-                            stacking: 'normal',
-                            lineColor: '#666666',
-                            lineWidth: 1,
-                            marker: {
-                                lineWidth: 1,
-                                lineColor: '#666666',
-                                symbol: 'circle',
-                                radius: 2
-                            }
-                        },
-                        series: {
-                            events: {
-                                legendItemClick: function () {
-                                    return false;
-                                }
-                            }
-                        }
-                    },
-                    series: [{
-                        name: 'Recuperados',
-                        data: recoveredValues,
-                        color: '#82feb7',
-                        dataLabels: {
-                            enabled: true,
-                            format: "{total}"
-                        },
-                    }, {
-                        name: 'Activos',
-                        data: activesValues,
-                        color: '#feb782'
-                    }, {
-                        name: 'Defunciones',
-                        data: deathsValues,
-                        color: '#262524'
-                    }]
-                };
-            })
+                    }
+                }
+            },
+            series: [{
+                name: 'Recuperados',
+                data: recoveredValues,
+                color: '#82feb7',
+                dataLabels: {
+                    enabled: true,
+                    format: "{total}"
+                },
+            }, {
+                name: 'Activos',
+                data: activesValues,
+                color: '#feb782'
+            }, {
+                name: 'Defunciones',
+                data: deathsValues,
+                color: '#262524'
+            }]
+        };
+
         this.setState({ chartOptions: finalData, isLoading: false });
 
     }

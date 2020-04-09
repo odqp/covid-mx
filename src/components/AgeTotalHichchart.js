@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import axios from 'axios';
 import ReactSpinner from 'react-bootstrap-spinner';
 
 class AgeTotalHichchart extends Component {
@@ -14,68 +13,62 @@ class AgeTotalHichchart extends Component {
             // To avoid unnecessary update keep all options in the state.
             chartOptions: {},
             hoverData: null,
-            isLoading: true
+            isLoading: true,
+            ageData: props.ageData
         };
     }
 
-    async componentDidMount() {
-        //HighchartsMore(Highcharts)
+    async componentDidMount() {        
         let finalData = {}
-        await axios.get('https://grei4yqd3c.execute-api.us-east-1.amazonaws.com/Prod/edades')
-            .then(response => {
-                let tempdata = response.data.Items;
 
-                let ageLabels = [];
-                let totalCases = [];                
+        let sortedArray = this.state.ageData
 
-                var sortedArray = tempdata.sort(function (a, b) {
-                    return  a["Id"] - b["Id"];
-                });
+        let ageLabels = [];
+        let totalCases = [];
 
-                sortedArray.forEach(function (item) {
-                    ageLabels.push(item["Edad"]);
-                    totalCases.push(parseInt(item["Total"]));                    
-                });
+        sortedArray.forEach(function (item) {
+            ageLabels.push(item["Edad"]);
+            totalCases.push(parseInt(item["Total"]));
+        });
+
+        finalData = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Casos detectados por edad',
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '22px'
+                }
+            },
+            xAxis: {
+                categories: ageLabels
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    enabled: false
+                }
+            },
+            tooltip: {
+                pointFormat: '<b>{point.y}</b><br/>',
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                }
+            },
+            series: [{
+                name: 'Detectados',
+                data: totalCases,
+                color: "#feb782"
+            }]
+        };
 
 
-                finalData = {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Casos detectados por edad',
-                        style: {                         
-                            fontWeight: 'bold',
-                            fontSize: '22px'
-                        }
-                    },
-                    xAxis: {
-                        categories: ageLabels
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {                            
-                            enabled: false
-                        }                        
-                    },
-                    tooltip: {
-                        pointFormat: '<b>{point.y}</b><br/>',
-                        shared: true
-                    },
-                    plotOptions: {
-                        column: {
-                            stacking: 'normal'
-                        }
-                    },
-                    series: [{
-                        name: 'Detectados',
-                        data: totalCases,
-                        color: "#feb782"
-                    }]
-                };                
-            })
-
-            this.setState({ chartOptions: finalData, isLoading: false });
+        this.setState({ chartOptions: finalData, isLoading: false });
     }
 
     render() {

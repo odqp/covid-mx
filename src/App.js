@@ -33,6 +33,9 @@ class App extends Component {
       isLoading: true,
       chartData: {},
       mexicoData: [],
+      italyData: [],
+      spainData: [],
+      usaData: [],      
       ageData: [],
       statesData: [],
       totalCases: 0,
@@ -55,6 +58,27 @@ class App extends Component {
       let lastDate = dateFormater(items[items.length-1].Date);
 
       this.setState({ mexicoData: items, newCases: newCases, newDeaths: newDeaths, lastDate: lastDate });      
+    }
+    );
+  }
+
+  async getSpain() {
+    await this.service.getSpain().then(items => {
+      this.setState({ spainData: items });      
+    }
+    );
+  }
+
+  async getItaly() {
+    await this.service.getItaly().then(items => {
+      this.setState({ italyData: items });      
+    }
+    );
+  }
+
+  async getUSA() {
+    await this.service.getUSA().then(items => {
+      this.setState({ usaData: items });      
     }
     );
   }
@@ -87,6 +111,9 @@ class App extends Component {
 
   async componentWillMount() {
     await this.getMexico();
+    await this.getItaly();
+    await this.getSpain();
+    await this.getUSA();
     await this.getAge();
     await this.getStates();
 
@@ -96,7 +123,7 @@ class App extends Component {
   
 
   render() {
-    const { mexicoData, isLoading, ageData, totalCases, totalDeaths, totalPossibles, newCases, newDeaths, lastDate } = this.state
+    const { mexicoData, isLoading, ageData, statesData, totalCases, totalDeaths, totalPossibles, newCases, newDeaths, lastDate, italyData, spainData, usaData } = this.state
 
     if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
 
@@ -178,7 +205,7 @@ class App extends Component {
             <Col sm={12}>
               <Card >
                 <Card.Body>
-                  <AreaHighchart />
+                  <AreaHighchart  mexicoData={mexicoData}/>
                 </Card.Body>
               </Card>
             </Col>            
@@ -205,14 +232,14 @@ class App extends Component {
             <Col sm={6}>
               <Card >
                 <Card.Body>
-                  <MapHighchart />
+                  <MapHighchart statesData={statesData}/>
                 </Card.Body>
               </Card>
             </Col>
             <Col sm={6}>
               <Card >
                 <Card.Body>
-                  <StateDetailHighchart />
+                  <StateDetailHighchart statesData={statesData}/>
                 </Card.Body>
               </Card>
             </Col>
@@ -222,7 +249,7 @@ class App extends Component {
             <Col sm={4}>
               <Card >
                 <Card.Body>
-                  <AgeTotalHichchart />
+                  <AgeTotalHichchart ageData={ageData}/>
                 </Card.Body>
               </Card>
             </Col>
@@ -236,7 +263,7 @@ class App extends Component {
             <Col sm={4}>
               <Card >
                 <Card.Body>
-                  <AgeHighchart />
+                  <AgeHighchart ageData={ageData}/>
                 </Card.Body>
               </Card>
             </Col>
@@ -246,7 +273,7 @@ class App extends Component {
             <Col sm={6}>
               <Card >
                 <Card.Body>
-                  <CountriesCasesHighchart />
+                  <CountriesCasesHighchart mexicoData={mexicoData} spainData={spainData} italyData={italyData} usaData={usaData} />
                 </Card.Body>
               </Card>
 
@@ -254,7 +281,7 @@ class App extends Component {
             <Col sm={6}>
               <Card >
                 <Card.Body>
-                  <CountriesDeathsHighchart />
+                  <CountriesDeathsHighchart mexicoData={mexicoData} spainData={spainData} italyData={italyData} usaData={usaData} />
                 </Card.Body>
               </Card>
             </Col>
