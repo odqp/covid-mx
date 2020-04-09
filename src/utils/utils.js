@@ -1,5 +1,3 @@
-const someCommonValues = ['common', 'values'];
-
 export const dateFormater = (date) => {
    //Do something with the input
    let dateSplit = [];

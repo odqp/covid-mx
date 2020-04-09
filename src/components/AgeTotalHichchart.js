@@ -3,7 +3,6 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import axios from 'axios';
 import ReactSpinner from 'react-bootstrap-spinner';
-import HighchartsMore from 'highcharts/highcharts-more'
 
 class AgeTotalHichchart extends Component {
 
@@ -56,8 +55,7 @@ class AgeTotalHichchart extends Component {
                     },
                     yAxis: {
                         min: 0,
-                        title: {
-                            text: 'Total fruit consumption',
+                        title: {                            
                             enabled: false
                         }                        
                     },

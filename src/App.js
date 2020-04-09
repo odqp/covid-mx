@@ -7,26 +7,50 @@ import AgeHighchart from "./components/AgeHighchart"
 import CountriesCasesHighchart from "./components/CountriesCasesHighchart"
 import CountriesDeathsHighchart from "./components/CountriesDeathsHighchart"
 import AgeTotalHichchart from "./components/AgeTotalHichchart"
+import CasesByDay from "./components/CasesByDay"
+import DeathsByDay from "./components/DeathsByDay"
 import ReactGA from 'react-ga';
-
 import { Col, Row, Container, Card } from "react-bootstrap";
-
+import dataService  from "./services/dataService"
+import  constants from "./utils/consts"
+import ReactSpinner from 'react-bootstrap-spinner'
 
 class App extends Component {
 
   constructor() {
     super()
+    this.constants = new constants();
+    this.service = new dataService();
     this.state = {
-      isLoading: false,
-      chartData: {}
+      isLoading: true,
+      chartData: {},
+      mexicoData: []
     }
-    ReactGA.initialize('UA-162747098-1');
-    ReactGA.pageview("/HomePage");
+
+    ReactGA.initialize(this.constants.GAID);
+    ReactGA.pageview(this.constants.PAGE_VIEW);    
+  }
+
+  async getMexico() {
+    await this.service.getMexico().then(items => {
+          this.setState({mexicoData: items});
+        }        
+    );    
+  }
+
+  async componentWillMount() {
+    await this.getMexico();
+
+    this.setState({isLoading: false});
   }
 
   render() {
+    const { mexicoData, isLoading } = this.state
+
+    if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
+
     return (
-      
+
         <div className="App">
           <header className="App-header">
             <p>Mi México en COVID</p>
@@ -47,6 +71,23 @@ class App extends Component {
               <Col sm={6}>
                 <Card >
                   <Card.Body>
+                  <CasesByDay mexicoData={mexicoData} />
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col sm={6}>
+                <Card >
+                  <Card.Body>
+                  <DeathsByDay mexicoData={mexicoData} />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <Col sm={6}>
+                <Card >
+                  <Card.Body>
                     <MapHighchart />
                   </Card.Body>
                 </Card>
@@ -57,7 +98,6 @@ class App extends Component {
                     <StateDetailHighchart />
                   </Card.Body>
                 </Card>
-
               </Col>
             </Row>
             <br />
