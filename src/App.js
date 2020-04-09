@@ -12,7 +12,7 @@ import DeathsByDay from "./components/DeathsByDay"
 import AgePercentage from "./components/AgePercentage"
 import SexPercentage from "./components/SexPercentage"
 import ReactGA from 'react-ga';
-import { Col, Row, Container, Card } from "react-bootstrap";
+import { Col, Row, Container, Card, Navbar, NavItem, NavDropdown, MenuItem, Nav } from "react-bootstrap";
 import dataService from "./services/dataService"
 import constants from "./utils/consts"
 import ReactSpinner from 'react-bootstrap-spinner'
@@ -28,6 +28,11 @@ class App extends Component {
       chartData: {},
       mexicoData: [],
       ageData: [],
+      statesData: [],
+      totalCases: 0,
+      totalDeaths: 0,
+      totalPossibles: 0
+
     }
 
     ReactGA.initialize(this.constants.GAID);
@@ -48,34 +53,138 @@ class App extends Component {
     );
   }
 
+  async getStates() {
+
+    await this.service.getStates().then(items => {
+      let totalCases = 0;
+      let posibleCases = 0;
+      let deathsCases = 0;
+      items.forEach(function (item) {
+        totalCases += (parseInt(item[2]));
+        posibleCases += (parseInt(item[4]));
+        deathsCases += (parseInt(item[5]));
+      });
+
+      this.setState({ statesData: items, totalCases: totalCases, totalDeaths: deathsCases, totalPossibles: posibleCases });
+    }
+    );
+  }
+
+
+
   async componentWillMount() {
     await this.getMexico();
     await this.getAge();
+    await this.getStates();
 
     this.setState({ isLoading: false });
   }
 
   render() {
-    const { mexicoData, isLoading, ageData } = this.state
+    const { mexicoData, isLoading, ageData, totalCases, totalDeaths, totalPossibles } = this.state
 
     if (isLoading) return <ReactSpinner type="grow" color="primary" size="3" />;
 
     return (
 
       <div className="App">
-        <header className="App-header">
-          <p>Mi México en COVID</p>
-        </header>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">
+            <img
+              alt=""
+              src={process.env.PUBLIC_URL + '/logo192.png'}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />{' '}
+              Mi México en COVID
+            </Navbar.Brand>
+        </Navbar>
+
         <Container fluid>
           <br />
           <Row>
             <Col>
+              
+                  <Row>
+                    <Col sm={2}>
+                      <Card
+                        bg={'danger'}
+                        text={'white'}
+                      >
+                        <Card.Header>Detectados</Card.Header>
+                        <Card.Body>                          
+                          <Card.Title>{totalCases}</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col sm={2}>
+                      <Card
+                        bg={'secondary'}
+                        text={'white'}
+                      >
+                        <Card.Header>Defunciones</Card.Header>
+                        <Card.Body>                          
+                          <Card.Title>{totalDeaths}</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col sm={2}>
+                      <Card
+                        bg={'warning'}
+                        text={'white'}
+                      >
+                        <Card.Header>Sospechosos</Card.Header>                        
+                        <Card.Body>                          
+                          <Card.Title>{totalPossibles}</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col sm={2}>
+                      <Card
+                        bg={'danger'}
+                        text={'white'}
+                      >
+                        <Card.Header>Nuevos</Card.Header>
+                        <Card.Body>                          
+                          <Card.Title>+ 1233 </Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col sm={2}>
+                      <Card
+                        bg={'secondary'}
+                        text={'white'}
+                      >
+                        <Card.Header>Nuevas defunciones</Card.Header>
+                        <Card.Body>
+                          <Card.Title> +135 </Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                    <Col sm={2}>
+                      <Card
+                        bg={'info'}
+                        text={'white'}
+                      >
+                        <Card.Header>Fecha</Card.Header>
+                        <Card.Body>
+                          <Card.Title>8/4/2020 </Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+            </Col>
+          </Row>
+          <br />
+          <Row>            
+            <Col sm={12}>
               <Card >
                 <Card.Body>
                   <AreaHighchart />
                 </Card.Body>
               </Card>
-            </Col>
+            </Col>            
           </Row>
           <br />
           <Row>
@@ -110,7 +219,7 @@ class App extends Component {
                 </Card.Body>
               </Card>
             </Col>
-          </Row>                    
+          </Row>
           <br />
           <Row>
             <Col sm={4}>
@@ -171,8 +280,18 @@ class App extends Component {
           <br />
         </Container>
 
-        <footer className="App-header">
-        </footer>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">
+            <img
+              alt=""
+              src={process.env.PUBLIC_URL + '/twitter.png'}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />{' '}
+              <a href="https://twitter.com/MexicoCovid">@MexicoCovid</a>
+            </Navbar.Brand>
+        </Navbar>
       </div >
     );
   }
