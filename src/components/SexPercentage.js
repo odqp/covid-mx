@@ -45,7 +45,7 @@ class AgePercentage extends Component {
                 type: 'pie'
             },
             title: {
-                text: 'Porcentaje de infectados por edad',
+                text: 'Porcentaje de infectados por sexo',
                 style: {                         
                     fontWeight: 'bold',
                     fontSize: '22px'
