@@ -9,7 +9,7 @@ import CountriesDeathsHighchart from "./components/CountriesDeathsHighchart"
 import AgeTotalHichchart from "./components/AgeTotalHichchart"
 import CasesByDay from "./components/CasesByDay"
 import DeathsByDay from "./components/DeathsByDay"
-import AgePercentage from "./components/AgePercentage"
+import DeathsByState from "./components/DeathsByState"
 import SexPercentage from "./components/SexPercentage"
 import ReactGA from 'react-ga';
 import { Col, Row, Container, Card, Navbar, NavItem, NavDropdown, MenuItem, Nav } from "react-bootstrap";
@@ -202,13 +202,20 @@ class App extends Component {
           </Row>
           <br />
           <Row>            
-            <Col sm={12}>
+            <Col sm={6}>
               <Card >
                 <Card.Body>
                   <AreaHighchart  mexicoData={mexicoData}/>
                 </Card.Body>
               </Card>
-            </Col>            
+            </Col>
+            <Col sm={6}>
+              <Card >
+                <Card.Body>
+                  <MapHighchart statesData={statesData}/>
+                </Card.Body>
+              </Card>
+            </Col>
           </Row>
           <br />
           <Row>
@@ -232,14 +239,14 @@ class App extends Component {
             <Col sm={6}>
               <Card >
                 <Card.Body>
-                  <MapHighchart statesData={statesData}/>
+                  <StateDetailHighchart statesData={statesData}/>
                 </Card.Body>
               </Card>
             </Col>
             <Col sm={6}>
               <Card >
                 <Card.Body>
-                  <StateDetailHighchart statesData={statesData}/>
+                  <DeathsByState statesData={statesData}/>
                 </Card.Body>
               </Card>
             </Col>

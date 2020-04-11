@@ -34,7 +34,7 @@ class MapHighchart extends Component {
 
         options = {
             chart: {
-                height: 700,//(9 / 16 * 100) + '%',
+                height: 500,//(9 / 16 * 100) + '%',
                 map: "countries/mx/mx-all"
             },
             title: {
@@ -67,18 +67,18 @@ class MapHighchart extends Component {
                     to: 500,
                     color: "#feb782"
                 }, {
-                    from: 500,
-                    to: 1000,
+                    from: 500,                    
                     color: "#B7371A"
                 }]
             },
             legend: {
-                align: 'left',
+                align: 'right',
                 floating: true,
                 layout: 'vertical',
-                verticalAlign: 'bottom',
+                verticalAlign: 'top',
                 reversed: true,
                 valueDecimals: 0,
+                y: 100
             },
             subtitle: {
                 enabled: false,
@@ -106,7 +106,8 @@ class MapHighchart extends Component {
                 }
             ],
             mapNavigation: {
-                enabled: false,
+                enabled: true,
+                enableMouseWheelZoom: false,
                 buttonOptions: {
                     verticalAlign: "bottom"
                 }

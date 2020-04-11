@@ -1,45 +1,9 @@
 import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import axios from 'axios';
 import ReactSpinner from 'react-bootstrap-spinner';
 
-const dataConfig = [
-    ['mx-ag', 1, "Aguascalientes"],
-    ['mx-bc', 2, "Baja California"],
-    ['mx-bs', 3, "Baja California Sur"],
-    ['mx-cm', 4, "Campeche"],
-    ['mx-co', 5, "Coahuila"],
-    ['mx-cl', 6, "Colima"],
-    ['mx-cs', 7, "Chiapas"],
-    ['mx-ch', 8, "Chihuahua"],
-    ['mx-df', 9, "Ciudad de México"],
-    ['mx-dg', 10, "Durango"],
-    ['mx-gj', 11, "Guanajuato"],
-    ['mx-gr', 12, "Guerrero"],
-    ['mx-hg', 13, "Hidalgo"],
-    ['mx-ja', 14, "Jalisco"],
-    ['mx-mx', 15, "Estado de México"],
-    ['mx-mi', 16, "Michoacán"],
-    ['mx-mo', 17, "Morelos"],
-    ['mx-na', 18, "Nayarit"],
-    ['mx-nl', 19, "Nuevo León"],
-    ['mx-oa', 20, "Oaxaca"],
-    ['mx-pu', 21, "Puebla"],
-    ['mx-qt', 22, "Queretaro"],
-    ['mx-qr', 23, "Quintana Roo"],
-    ['mx-sl', 24, "San Luis Potosí"],
-    ['mx-si', 25, "Sinaloa"],
-    ['mx-so', 26, "Sonora"],
-    ['mx-tb', 27, "Tabasco"],
-    ['mx-tm', 28, "Tamaulipas"],
-    ['mx-tl', 29, "Tlaxcala"],
-    ['mx-ve', 30, "Veracruz"],
-    ['mx-yu', 31, "Yucatán"],
-    ['mx-za', 32, "Zacatecas"]
-];
-
-class StateDetailHighchart extends Component {
+class DeathsByState extends Component {
     constructor(props) {
         super(props);
 
@@ -54,13 +18,17 @@ class StateDetailHighchart extends Component {
 
     async componentDidMount() {
         var finaldata = {};
-        let sortedArray = this.state.statesData;
-        let statesLabels = []
-        let cases = []        
+        let casesArray = this.state.statesData;
+        let statesLabels = []        
+        let deaths = []
+
+         let sortedArray = casesArray.sort(function (a, b) {
+             return b[5] - a[5];
+         });
 
         sortedArray.forEach(function (item) {
-            statesLabels.push(item[1]);
-            cases.push(parseInt(item[2]));            
+            statesLabels.push(item[1]);            
+            deaths.push(parseInt(item[5]));
         });
 
         finaldata = {
@@ -69,7 +37,7 @@ class StateDetailHighchart extends Component {
                 type: 'bar'
             },
             title: {
-                text: 'Casos registradas por estado',
+                text: 'Defunciones registradas por estado',
                 style: {
                     fontWeight: 'bold',
                     fontSize: '22px'
@@ -112,10 +80,9 @@ class StateDetailHighchart extends Component {
             },
             series: [
                 {
-                    id: 'mainSeries',
-                    name: 'Casos',
-                    data: cases,
-                    color: "#feb782"
+                    name: 'Defunciones',
+                    data: deaths,
+                    color: "#262524"
                 }
             ]
         };
@@ -138,4 +105,4 @@ class StateDetailHighchart extends Component {
     }
 }
 
-export default StateDetailHighchart;
+export default DeathsByState;

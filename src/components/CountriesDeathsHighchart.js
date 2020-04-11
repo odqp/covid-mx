@@ -97,7 +97,8 @@ class CountriesDeathsHighchart extends Component {
           name: 'USA',
           data: valoresUSA,
           color: "#ffa94e",
-          dashStyle: 'ShortDot'
+          dashStyle: 'ShortDot',
+          visible: false
       },
       {
            name: 'España',

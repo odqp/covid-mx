@@ -47,6 +47,9 @@ class DeathsByDay extends Component {
                 min: 0,
                 title: {                    
                     enabled: false
+                },                
+                stackLabels: {
+                    enabled: true
                 }
             },            
             plotOptions: {
