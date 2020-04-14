@@ -37,7 +37,11 @@ class CasesByDay extends Component {
                 type: 'column'
             },
             title: {
-                text: 'Casos nuevos detectador por día'
+                text: 'Casos nuevos detectados por día',
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '22px'
+                }
             },
             xAxis: {
                 categories: datesLables,

@@ -37,7 +37,11 @@ class DeathsByDay extends Component {
                 type: 'column'
             },
             title: {
-                text: 'Defunciones registradas por día'
+                text: 'Defunciones registradas por día',
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '22px'
+                }
             },
             xAxis: {
                 categories: datesLables,

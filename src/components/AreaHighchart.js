@@ -68,7 +68,9 @@ class AreaHighchart extends Component {
                 tickmarkPlacement: 'off',
                 title: {
                     enabled: false
-                }
+                },
+                showFirstLabel: true,
+                showLastLabel: true,
             },
             yAxis: {
                 title: {

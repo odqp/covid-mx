@@ -45,7 +45,7 @@ class AgePercentage extends Component {
                 type: 'pie'
             },
             title: {
-                text: 'Porcentaje de infectados por sexo',
+                text: 'Porcentaje de casos femenino/masculino',
                 style: {                         
                     fontWeight: 'bold',
                     fontSize: '22px'
@@ -58,24 +58,34 @@ class AgePercentage extends Component {
                 point: {
                     valueSuffix: '%'
                 }
-            },
+            },            
             plotOptions: {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
+                        enabled: false,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
                     },
                     showInLegend: true
                 }
             },
             series: [{
                 name: 'Infectados',
-                colorByPoint: true,                
+                colorByPoint: true,
+                point: {
+                    events: {
+                        legendItemClick: function () {
+                            return false; // <== returning false will cancel the default action
+                        }
+                    }
+                },           
                 data: [{
                     name: 'Masculino',
                     y: maleCases,
-                    color: "#0860b6"
+                    color: "#0860b6",
+                    sliced: true,
+                    selected: true
                 }, {
                     name: 'Femenino',
                     y: femaleCases,
